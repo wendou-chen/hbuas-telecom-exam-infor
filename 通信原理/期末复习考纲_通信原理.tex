@@ -1,0 +1,154 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[UTF8]{ctex} % 支持中文
+\usepackage{amsmath, amssymb} % 数学公式
+\usepackage{geometry} % 页面边距
+\usepackage{xcolor} % 颜色
+\usepackage{framed} % 边框
+\usepackage{enumitem} % 列表优化
+\usepackage{tcolorbox} % 重点提示框
+
+% 页面设置
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+% 标题信息
+\title{\textbf{通信原理期末复习核心考纲}}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+		本考纲基于期末考试复习文件（PPT课件及典型计算题）整理。涵盖六大核心模块，重点标注了必考公式、易错概念及典型题型解题思路。
+	\end{abstract}
+	
+	\tableofcontents
+	\newpage
+	
+	\section{一、数字通信系统性能指标}
+	\subsection{1. 速率指标}
+	\begin{itemize}
+		\item \textbf{码元传输速率 ($R_B$)}：单位 Baud (波特)，即每秒传输的码元个数。
+		\item \textbf{信息传输速率 ($R_b$)}：单位 bit/s (bps)，即每秒传输的比特数。
+		\item \textbf{换算关系}：
+		\[
+		R_b = R_B \cdot \log_2 M
+		\]
+		其中 $M$ 为进制数（如 8 进制 $M=8$，16 进制 $M=16$）。
+	\end{itemize}
+	
+	\subsection{2. 可靠性指标}
+	\begin{itemize}
+		\item \textbf{误码率 ($P_e$)}：错误码元数 / 传输总码元数。
+		\item \textbf{误信率 ($P_b$)}：错误比特数 / 传输总比特数。
+		\item \textbf{注意}：在多进制系统中，一个码元错误可能导致多个比特错误，计算 $P_b$ 时需仔细审题（如图片99\_6题型）。
+	\end{itemize}
+	
+	\section{二、随机过程与噪声分析}
+	\subsection{1. 平稳随机过程通过线性系统}
+	\begin{itemize}
+		\item \textbf{功率谱密度关系}：
+		\[
+		P_o(f) = P_i(f) \cdot |H(f)|^2
+		\]
+		\item \textbf{输出噪声功率 $N$}：
+		\[
+		N = \int_{-\infty}^{+\infty} P_o(f) df
+		\]
+		\textbf{典型考法}：输入双边功率谱密度为 $n_0/2$ 的白噪声，通过带宽为 $B$ 的理想带通滤波器：
+		\[
+		N = \frac{n_0}{2} \cdot 2B = n_0 B
+		\]
+	\end{itemize}
+	
+	\subsection{2. 窄带高斯噪声}
+	\begin{itemize}
+		\item \textbf{时域表达式}：
+		\[
+		n(t) = n_c(t)\cos\omega_c t - n_s(t)\sin\omega_c t
+		\]
+		\item \textbf{统计特性}：$n_c(t)$ 和 $n_s(t)$ 是低通型高斯过程，均值为 0，方差与 $n(t)$ 相同。
+		\item \textbf{一维概率密度}：服从高斯分布，需掌握写出 $f(x)$ 表达式的能力。
+	\end{itemize}
+	
+	\section{三、信道与信道容量}
+	\subsection{1. 香农公式 (Shannon Limit)}
+	适用于带限加性高斯白噪声信道（AWGN）：
+	\[
+	C = B \log_2 (1 + \frac{S}{N}) \quad \text{(bit/s)}
+	\]
+	\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=考场陷阱]
+		题目给出的信号功率通常是\textbf{发射功率} $S_t$，计算信噪比时必须先减去\textbf{信道衰减}（如 20dB）得到\textbf{接收功率} $S_r$，再代入公式计算。即 $S = S_{received}$。
+	\end{tcolorbox}
+	
+	\section{四、模拟调制系统 (AM/FM)}
+	\subsection{1. 幅度调制 (AM)}
+	\begin{itemize}
+		\item \textbf{调幅系数}：$m_a = \frac{|m(t)|_{\max}}{A_c}$，通常要求 $m_a \le 1$。
+		\item \textbf{带宽}：$B_{AM} = 2f_H$ ($f_H$ 为基带信号最高频率)。
+		\item \textbf{功率}：$P_{AM} = P_c + P_s = \frac{A_c^2}{2} + \frac{\overline{m^2(t)}}{2}$。
+	\end{itemize}
+	
+	\subsection{2. 角度调制 (FM) - 重点}
+	\begin{itemize}
+		\item \textbf{瞬时频率}：$f(t) = f_c + K_f m(t)$。
+		\item \textbf{最大频偏}：$\Delta f_{\max} = K_f |m(t)|_{\max}$ （注意 $K_f$ 单位换算）。
+		\item \textbf{调频指数}：$m_f = \frac{\Delta f_{\max}}{f_m}$。
+		\item \textbf{卡森公式 (带宽估算)}：
+		\[
+		B_{FM} \approx 2(m_f + 1)f_m = 2(\Delta f + f_m)
+		\]
+		\item \textbf{逆向题型}：已知相位 $\varphi(t)$ 求 $m(t)$，需要对相位求导。
+	\end{itemize}
+	
+	\section{五、数字基带传输 (核心计算区)}
+	\subsection{1. 奈奎斯特第一准则 (无 ISI)}
+	\begin{itemize}
+		\item \textbf{判据}：$H(\omega)$ 在截止频率处呈\textbf{奇对称}滚降。
+		\item \textbf{奈奎斯特带宽 ($f_N$ 或 $W$)}：理想低通下的最小带宽。
+		\[
+		f_N = \frac{R_B}{2}
+		\]
+	\end{itemize}
+	
+	\subsection{2. 升余弦滚降系统}
+	\begin{itemize}
+		\item \textbf{实际带宽 $B$} 与 滚降系数 $\alpha$ 的关系：
+		\[
+		B = \frac{R_B}{2}(1+\alpha) = f_N(1+\alpha)
+		\]
+		\item \textbf{最高频带利用率}：
+		\[
+		\eta = \frac{R_B}{B} = \frac{2}{1+\alpha} \quad \text{(Baud/Hz)}
+		\]
+	\end{itemize}
+	
+	\subsection{3. 多进制系统设计 (M-ary)}
+	当信道带宽受限（如 $B < R_b$）时，必须采用多进制调制。
+	\begin{itemize}
+		\item \textbf{步骤}：
+		1. 计算系统允许的最大 $R_B = \frac{2B}{1+\alpha}$。
+		2. 根据 $R_b = R_B \log_2 M$，求出所需的进制数 $M$（通常取 $2^k$）。
+		3. 典型题型：8进制、16进制系统的带宽与速率互算。
+	\end{itemize}
+	
+	\section{六、信源编码 (PCM与复用)}
+	\subsection{1. PCM 基本参数}
+	\begin{itemize}
+		\item \textbf{采样}：$f_s \ge 2f_H$。
+		\item \textbf{量化}：量化位数 $N$ 决定信噪比和带宽。
+		\item \textbf{传输速率}：$R_b = f_s \cdot N$。
+	\end{itemize}
+	
+	\subsection{2. 时分复用 (TDM)}
+	\begin{itemize}
+		\item \textbf{总速率}：$R_{total} = n \text{路} \times R_{b(\text{每路})}$。
+		\item \textbf{带宽需求 (进阶考点)}：
+		\begin{itemize}
+			\item \textbf{NRZ (不归零码，占空比1)}：传输带宽 $B = R_b$。
+			\item \textbf{RZ (归零码，占空比1/2)}：传输带宽 $B = 2 R_b$。
+		\end{itemize}
+	\end{itemize}
+	
+\end{document}
