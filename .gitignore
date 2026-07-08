@@ -1,0 +1,50 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+
+# Local logs, uploads, and generated working files
+logs/
+.codepilot-uploads/
+tmp/
+temp/
+
+# Local toolchains and dependency caches
+**/.toolchain/
+**/node_modules/
+**/.venv/
+**/__pycache__/
+*.pyc
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# Copyright-sensitive reference material.
+# Keep indexes, notes, and links in Markdown instead of committing full books.
+**/书籍/
+**/课本文件/
+**/教材拆分章节/
+**/考研辅导讲义/
+**/习题册/
+**/分章节/
+
+# Course software build outputs
+*.eprj2-shm
+*.uvguix.*
+*.uvoptx
+*.bak
