@@ -1,0 +1,130 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{amsmath, amssymb}
+\usepackage{enumitem}
+
+\title{\textbf{\Huge 2026年《移动通信》期末模拟练习题}}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{一、 同频干扰与区群规模计算}
+设某蜂窝移动通信网的小区辐射半径为 $10\,\text{km}$，根据同频干扰抑制的要求，同频小区之间的距离应大于 $32\,\text{km}$。问该网的区群应由几个小区组成？（要求写出必要的计算过程与判别依据）
+
+\vfill
+
+\section*{二、 话务量与信道数计算}
+移动通信网的某个小区共有 80 个用户，平均每用户 $C=10$ 次/天，平均信道占用时间 $T=180$ 秒/次，集中系数 $K=20\%$。
+\begin{enumerate}[label=(\arabic*)]
+    \item 为保证呼损率小于 5\%，需共用的信道数是几个？
+    \item 若允许呼损率达 20\%，共用信道数可节省几个？
+\end{enumerate}
+
+\vfill
+\newpage
+
+\section*{三、 相干时间与均衡器传输极限}
+假定一个移动通信系统的工作频率为 $900\,\text{MHz}$，移动速度 $v = 120\,\text{km/h}$。
+\begin{enumerate}[label=(\arabic*)]
+    \item 试求信道的相干时间 $T_c$。
+    \item 假定符号速率为 $37.2\,\text{ks/s}$，在不更新均衡器系数的情况下，最多可以传输多少个符号？
+\end{enumerate}
+
+\vfill
+
+\section*{四、 常规突发序列数据传输效率}
+针对 GSM 系统常规突发序列帧结构（已知一帧长度为 $156.25\,\text{bit}$，用户信息比特为 $2 \times 57 = 114\,\text{bit}$），试求该帧结构的数据传输效率为多少？
+
+\vfill
+\newpage
+
+\section*{五、 移动通信工作方式}
+\textit{（第1章）}
+
+比较单工、双工、半双工三种工作方式的区别，并各举一个实际应用例子。
+
+\vfill
+\newpage
+
+\section*{六、 多径效应与信道参数}
+\textit{（第2章）}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 什么是多径效应？
+    \item 描述多径衰落信道的主要参数有哪些？
+\end{enumerate}
+
+\vfill
+
+\section*{七、 系统干扰与抗衰落技术}
+\textit{（第3章、第5章）}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 移动通信环境下主要存在哪五种干扰？
+    \item 为了对抗衰落，分集接收技术主要有哪三种合并方式？自适应均衡的工作方式有哪两种？
+\end{enumerate}
+
+\vfill
+\newpage
+
+\section*{八、 CDMA系统远近效应}
+\textit{（第8章）}
+
+什么是远近效应？在移动通信系统中应当如何克服远近效应？
+
+\vfill
+
+\section*{九、 OFDMA技术与NR帧结构}
+\textit{（第6章、第9-10章）}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 什么是正交频分多址（OFDMA）技术？其相比传统FDMA有哪些优势？
+    \item 简述 5G NR 的无线帧结构特点（要求说明无线帧、半帧、子帧的时间长度，以及时隙与 OFDM 符号的关系）。
+\end{enumerate}
+
+\vfill
+\newpage
+
+\section*{十、 移动通信基础与电波传播}
+\textit{（第1章、第2章）}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 简述移动通信的主要特点。
+    \item 移动通信信道中，电波的传播方式主要有哪四种？
+    \item 电波传播损耗由哪三部分合成？（写出公式或文字表达式）
+\end{enumerate}
+
+\vfill
+
+\section*{十一、 衰落参数与分类}
+\textit{（第2章）}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 写出多普勒频移（$f_d$）和相关带宽（$B_c$）的计算公式。
+    \item 多径衰落信道可以按照哪两种维度进行分类？
+\end{enumerate}
+
+\vfill
+\newpage
+
+\section*{十二、 特定系统帧与物理层特性}
+\textit{（第7章、第8章）}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 在GSM移动通信系统中，除了常规突发之外，还有哪三种类型的突发序列？
+    \item 简述3G移动通信系统物理层的两个核心特性。
+\end{enumerate}
+
+\vfill
+
+\section*{十三、 5G NR 符号细节}
+\textit{（第9-10章）}
+
+在5G NR中，一个时隙内的OFDM符号可能包括哪三种类型？它们各自的传输方向有何限制？
+
+\vfill
+
+\end{document}

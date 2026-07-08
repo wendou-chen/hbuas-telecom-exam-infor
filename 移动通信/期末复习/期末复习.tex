@@ -1,0 +1,108 @@
+\documentclass[12pt, a4paper]{ctexart}
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+
+\title{\textbf{\Huge 2026年《移动通信》期末冲刺必刷题}}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+	\maketitle
+
+	% ==========================================
+	% 题目一：同频干扰与区群规模计算
+	% ==========================================
+	\section*{一、 同频干扰与区群规模计算（组网技术基础）}
+
+	\textbf{【考题】}
+	设某蜂窝移动通信网的小区辐射半径为 10 km，根据同频干扰抑制的要求，同频小区之间的距离应大于 32 km。问该网的区群应由几个小区组成？[cite: 25]
+
+	\vspace{0.5em}
+	\noindent\textbf{【标准解析与踩分点】}
+	\begin{enumerate}[label=\arabic*.]
+		\item \textbf{列出约束条件}：根据同频干扰抑制的要求，同频距离公式为 $D = \sqrt{3N} \cdot R$。[cite: 26]
+		\item \textbf{代入数据求解}：将已知条件代入得 $32 \le \sqrt{3N} \cdot 10$。[cite: 26]
+		\item \textbf{计算理论下限}：两边平方并化简，求得 $N \ge 1024 / 300 = 9.41$。[cite: 27]
+		\item \textbf{确定最终区群数}：根据蜂窝网的几何特性，区群内的小区数必须满足 $N = i^{2} + ij + j^{2}$（其中 $i \ge 0$, $j \ge 0$, $i+j > 1$）。$N$ 应取满足条件且最小的有效值，因此 $N = 12$（此时 $i=2, j=2$）。[cite: 24, 28]
+		\item \textbf{最终结论}：该网的区群是由 12 个六边形的小区构成。[cite: 29]
+	\end{enumerate}
+
+	\vspace{1.5em}
+
+	% ==========================================
+	% 题目二：话务量与信道数计算
+	% ==========================================
+	\section*{二、 话务量与信道数计算（爱尔兰公式应用）}
+
+	\textbf{【考题】}
+	移动通信网的某个小区共有 80 个用户，平均每用户 $C=10$ 次/天，平均信道占用时间 $T=180$ 秒/次，集中系数 $K=20\%$。[cite: 35, 36]
+	\textbf{问：}为保证呼损率小于 5\%，需共用的信道数是几个？若允许呼损率达 20\%，共用信道数可节省几个？[cite: 36]
+
+	\vspace{0.5em}
+	\noindent\textbf{【标准解析与踩分点】}
+	\begin{enumerate}[label=\arabic*.]
+		\item \textbf{计算单用户忙时话务量}：
+		根据公式计算每个用户忙时的话务量：
+		$$A_{a} = \frac{CTK}{3600}$$ [cite: 34]
+		代入数据：$A_{a} = \frac{10 \times 180 \times 0.2}{3600} = 0.1 \text{ Erl}$。[cite: 37]
+		\item \textbf{计算小区总话务量}：
+		小区总话务量为 $A = M A_{a} = 80 \times 0.1 = 8 \text{ Erl}$。[cite: 38]
+		\item \textbf{查表得信道数}：[cite: 39]
+		\begin{itemize}
+			\item 查 Erl 呼损表可知，当呼损率小于 5\% 时，需要的公用信道数为 13 个。
+			\item 当允许的呼损率达 20\% 时，查表可得所需的信道数为 9 个。
+		\end{itemize}
+		\item \textbf{最终结论}：放宽呼损率要求后，由此可以节省 4 个信道。[cite: 39]
+	\end{enumerate}
+
+	\vspace{1.5em}
+
+	% ==========================================
+	% 题目三：相干时间与均衡器传输
+	% ==========================================
+	\section*{三、 相干时间与均衡器传输极限（抗衰落技术）}
+
+	\textbf{【考题】}
+	假定一个移动通信系统的工作频率为 900 MHz，移动速度 $v = 120 \text{ km/h}$。
+	\textbf{试求：}
+	(1) 信道的相干时间；
+	(2) 假定符号速率为 37.2 ks/s，在不更新均衡器系数的情况下，最多可以传输多少个符号？[cite: 44]
+
+	\vspace{0.5em}
+	\noindent\textbf{【标准解析与踩分点】}
+	\begin{enumerate}[label=\arabic*.]
+		\item \textbf{计算相干时间}：
+		相干时间与多普勒最大频移成反比，公式推导与计算如下：
+		$$T_{c} = \frac{9}{16\pi f_{m}} = \frac{9\lambda}{16\pi v} = \frac{9c}{16\pi fv}$$ [cite: 45]
+		\textit{（导师避坑提示：考场上必须将速度 $120 \text{ km/h}$ 转换为 $\frac{100}{3} \text{ m/s}$，工作频率 $f = 900 \times 10^6 \text{ Hz}$ 计算！）}
+		代入计算得 $T_{c} = 1.791 \text{ ms}$。[cite: 45]
+		\item \textbf{计算传输符号数}：
+		最多可以传的符号数 = 符号速率 $\times$ 相干时间。[cite: 46, 47]
+		$$N = 37.2 \text{ kb/s} \times T_{c} = 37200 \times 1.791 \approx 66625$$ [cite: 47]
+		在不更新系数的情况下，最多可传输 66625 个符号。[cite: 47]
+	\end{enumerate}
+
+	\vspace{1.5em}
+
+	% ==========================================
+	% 题目四：常规突发序列传输效率
+	% ==========================================
+	\section*{四、 常规突发序列数据传输效率（GSM系统）}
+
+	\textbf{【考题】}
+	针对 GSM 系统常规突发序列帧结构，试求该帧结构的数据传输效率为多少？[cite: 68]
+
+	\vspace{0.5em}
+	\noindent\textbf{【标准解析与踩分点】}
+	\begin{enumerate}[label=\arabic*.]
+		\item \textbf{明确概念}：数据传输效率，表示一帧中传输的用户信息比特占总帧长度的比例。[cite: 69]
+		\item \textbf{提取帧结构参数}：已知 GSM 常规突发序列的一帧总长度为 156.25 bit。其中包含两段用户信息比特，总长度为 $2 \times 57 = 114$ bit。[cite: 69]
+		\item \textbf{计算效率}：
+		$$ \eta = \frac{114 \text{ bit}}{156.25 \text{ bit}} \approx 73\% $$ [cite: 69]
+	\end{enumerate}
+
+\end{document}
