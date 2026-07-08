@@ -1,0 +1,83 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[UTF8]{ctex} % 支持中文
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{amssymb} % <--- 修复点：新增这个包以支持 \square 方框符号
+
+% 页面边距设置
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+\title{\textbf{CMT2300A 射频模块 PCB 布局布线修改清单}\\ \large （冲刺 1000 米满分专项优化）}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+
+	\maketitle
+
+	\section*{前言：为什么要改？}
+	目前的 PCB 布局参考了网上的开源方案（该方案实测距离仅约 300 米）。为了完成课设 \textbf{“传输距离 $>$ 1000 米”} 的满分目标，我们需要对射频路径和电源完整性进行深度优化。请按照以下 3 点关键意见进行修改。
+
+	\section{射频信号路径优化（重中之重）}
+	\textbf{目标：} 消除信号反射，减少能量损耗。
+
+	\begin{enumerate}
+		\item \textbf{拉直走线：} 目前 \texttt{L4} $\rightarrow$ \texttt{L5} $\rightarrow$ \texttt{C3} $\rightarrow$ \texttt{RF1} 的路径存在 90 度直角拐弯。
+		\begin{itemize}
+			\item \textbf{修改动作：} 请将 \texttt{L4, L5, C3} 这一组元件整体旋转，放置在 \texttt{C16} 的右侧。
+			\item \textbf{最终效果：} 确保从芯片引脚出来，经过所有电感电容，一直到 SMA 接头，形成一条\textbf{水平的“一字型”直线}。
+			\item \textbf{禁止：} 射频主通路上严禁出现 90 度直角拐弯（如必须拐弯，请使用 45 度钝角或圆弧）。
+		\end{itemize}
+		\item \textbf{SMA 接头位置：} 配合上述修改，将 SMA 接头 (\texttt{RF1}) 顺势移到板子最右侧边缘，保持信号线平直进入。
+	\end{enumerate}
+
+	\section{电源滤波优化（决定稳定性）}
+	\textbf{目标：} 缩短电源回路，防止发射瞬间电压跌落导致芯片复位。
+
+	\begin{enumerate}
+		\item \textbf{电容搬家：} 目前 \texttt{C8-C11} 距离芯片引脚过远（约 150mil），滤波效果大打折扣。
+		\begin{itemize}
+			\item \textbf{修改动作：}
+			\begin{itemize}
+				\item 将 \texttt{C10, C11} 向下移动，\textbf{紧贴} 芯片上方的 \textbf{Pin 7 (DVDD)} 和 \textbf{Pin 6 (DGND)}。
+				\item 将 \texttt{C8, C9} 向下移动，\textbf{紧贴} 芯片右侧的 \textbf{Pin 4 (AVDD)} 和 \textbf{Pin 5 (AGND)}。
+			\end{itemize}
+			\item \textbf{原则：} 电容焊盘与芯片引脚焊盘的距离越近越好（能贴多近贴多近）。
+		\end{itemize}
+		\item \textbf{走线加粗：}
+		\begin{itemize}
+			\item \textbf{修改动作：} 连接电源引脚和电容的导线请加粗至 \textbf{20mil - 30mil}（或者直接用铺铜连接），目前的细线无法承受发射瞬间的大电流。
+		\end{itemize}
+	\end{enumerate}
+
+	\section{阻抗匹配与接地（细节决定成败）}
+	\textbf{目标：} 保证 50 欧姆阻抗，提供纯净的地平面。
+
+	\begin{enumerate}
+		\item \textbf{射频线宽计算：}
+		\begin{itemize}
+			\item \textbf{修改动作：} 连接 L/C 网络的那根射频主信号线，不能随便用默认线宽。请使用嘉立创 EDA 自带的“阻抗计算器”（板厚 1.6mm, 铜厚 1oz），计算出 \textbf{50 欧姆} 对应的线宽（通常在 \textbf{30mil - 50mil} 之间），并应用到设计中。
+		\end{itemize}
+		\item \textbf{就近打地孔 (GND Vias)：}
+		\begin{itemize}
+			\item \textbf{修改动作：} 所有的电容、电感、芯片散热焊盘（E-Pad）的接地端，必须在焊盘旁边\textbf{马上打过孔}通到背面地层。严禁地线绕远路。
+		\end{itemize}
+	\end{enumerate}
+
+	\vspace{1cm}
+	\noindent\fcolorbox{red}{white}{
+		\begin{minipage}{0.95\textwidth}
+			\textbf{\textcolor{red}{最后核对清单：}}
+			\begin{itemize}
+				\item [$\square$] 射频线拉直了吗？（拒绝 90 度弯）
+				\item [$\square$] 电源电容贴脸了吗？（C8-C11 紧贴芯片）
+				\item [$\square$] 射频线宽加粗了吗？（50 欧姆阻抗）
+				\item [$\square$] 丝印加了吗？（\textbf{Hbuas 23Comm 小组所有成员姓名} + JLC客编位置）
+			\end{itemize}
+		\end{minipage}
+	}
+
+\end{document}

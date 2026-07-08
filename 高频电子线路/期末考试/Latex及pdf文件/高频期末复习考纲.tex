@@ -1,0 +1,120 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+
+% 页面设置
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{高频电子线路}
+\rhead{期末复习核心考纲}
+\cfoot{\thepage}
+
+\title{\textbf{高频电子线路期末复习考纲}\\ \large{基于指定复习范围整理}}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+
+	\maketitle
+
+	\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=复习特别提示]
+		\textbf{不考内容（已剔除）：}
+		\begin{itemize}
+			\item 7.4.5 FM/PM（角度调制与解调）
+			\item 锁相环（PLL）及其应用
+		\end{itemize}
+		\textbf{必考重点（需熟练掌握）：}
+		\begin{itemize}
+			\item 抽头回路阻抗折算
+			\item 丙类功放的三种工作状态
+			\item 模拟乘法器（MC1496）与开关函数（AD630）
+		\end{itemize}
+	\end{tcolorbox}
+
+	\section{第一章：绪论}
+	\begin{itemize}
+		\item \textbf{调制的定义}：将低频信息信号（基带）搭载到高频载波上的过程。
+		\item \textbf{调制的三个目的}：
+		\begin{enumerate}
+			\item \textbf{天线尺寸匹配}：发射天线长度通常为波长的 $1/4$（$\lambda/4$），低频信号波长过长无法直接发射。
+			\item \textbf{信道复用}：实现频分复用（FDM），不同信号占据不同频段。
+			\item \textbf{减少干扰}：提高传输过程中的抗干扰能力。
+		\end{enumerate}
+		\item \textbf{无线电系统架构}：掌握发射机与接收机的基本框图（参考作业题或PPT）。
+	\end{itemize}
+
+	\section{第二章：高频无源网络（计算重点）}
+	\begin{itemize}
+		\item \textbf{选频回路指标}：
+		\begin{itemize}
+			\item 品质因数 $Q$：$Q = \frac{f_0}{BW_{0.7}}$
+			\item 矩形系数 $K_{r0.1}$：衡量滤波特性的优劣。
+		\end{itemize}
+		\item \textbf{串/并联谐振}：掌握基本的阻抗与频率特性。
+		\item \textbf{阻抗变换与抽头电路（$\bigstar$ 核心考点）}：
+		\begin{itemize}
+			\item 必须掌握\textbf{接入系数 $p$}（或匝数比 $n$）的计算。
+			\item \textbf{阻抗折算公式}：
+			\[ R_{eq} = \frac{R_L}{p^2} \quad \text{或} \quad R_{eq} = p^2 R_L \]
+			（注意：从支路折算到回路两端通常阻抗变大，需根据具体电路图判断）。
+		\end{itemize}
+		\item \textbf{作业重点}：复习题目 1-1, 1-11, 11-7（传输线相关）。
+	\end{itemize}
+
+	\section{第三章：高频放大器}
+	\subsection{小信号放大器}
+	\begin{itemize}
+		\item 关注增益、通频带以及稳定性的基本概念。
+		\item 了解 Y 参数等效电路。
+	\end{itemize}
+
+	\subsection{高频功率放大器（丙类/Class C）（$\bigstar$ 核心考点）}
+	\begin{itemize}
+		\item \textbf{工作原理}：利用选频网络滤除谐波，导通角 $\theta < 90^\circ$。
+		\item \textbf{三种工作状态}（结合负载特性曲线分析）：
+		\begin{enumerate}
+			\item \textbf{欠压状态}：恒流区，集电极效率低，输出电压随负载变化。
+			\item \textbf{临界状态}：输出功率最大，效率较高，最佳工作点。
+			\item \textbf{过压状态}：饱和区，输出电压恒定（接近 $V_{CC}$），包络失真。
+		\end{enumerate}
+		\item \textbf{考法}：给参数判断状态，或分析 $R_L$、$V_{CC}$、$V_{BB}$ 变化对状态的影响。
+	\end{itemize}
+
+	\section{第四章：正弦波振荡器}
+	\begin{itemize}
+		\item \textbf{起振与稳定条件}：
+		\begin{itemize}
+			\item 幅度条件：$|AF| > 1$（起振），$|AF|=1$（稳定）。
+			\item 相位条件：$\varphi_A + \varphi_F = 2n\pi$。
+		\end{itemize}
+		\item \textbf{三点式振荡器（$\bigstar$ 判别方法）}：
+		\begin{itemize}
+			\item 原则：\textbf{射同他异}（射极连接的两个电抗元件性质相同，第三个性质相反）。
+			\item 电感三点式（Hartley） vs 电容三点式（Colpitts）。
+		\end{itemize}
+		\item \textbf{晶体振荡器}：皮尔斯（Pierce）振荡器电路结构。
+	\end{itemize}
+
+	\section{第五章：频率变换与调制解调（$\bigstar$ 芯片应用）}
+	\begin{itemize}
+		\item \textbf{核心器件}：
+		\begin{itemize}
+			\item \textbf{AD630}：基于开关函数法的平衡调制/解调（需会看图 7.14）。
+			\item \textbf{MC1496 / MC1596}：模拟乘法器。需掌握如何通过外接电阻配置成 AM、DSB 调制或同步检波电路。
+		\end{itemize}
+		\item \textbf{线性调制技术}：
+		\begin{itemize}
+			\item AM（普通调幅）：有载波，包络检波。
+			\item DSB（双边带）：无载波，需同步检波。
+			\item SSB（单边带）：效率最高，产生方法（滤波法、相移法）。
+		\end{itemize}
+		\item \textbf{低电平调制}：在低功率级进行调制，然后放大。
+	\end{itemize}
+
+\end{document}

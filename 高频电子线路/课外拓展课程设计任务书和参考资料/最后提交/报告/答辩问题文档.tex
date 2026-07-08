@@ -1,0 +1,90 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+
+% 页面设置
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+\title{\textbf{433MHz射频模块设计·答辩满分速查手册}}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+
+	\maketitle
+
+	\section*{写在前面 (致组员)}
+	\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=⚠️ 核心原则]
+		老师验收时可能会随机提问。如果遇到不会的问题，\textbf{不要瞎编}！
+		请熟读本手册中的\textbf{加粗部分}，那是我们项目的得分点。
+		我们的核心优势是：\textbf{实测距离远 (>1000米)} + \textbf{电路细节规范}。
+	\end{tcolorbox}
+
+	\section{一、 我们的改进点 (PPT内容修正版)}
+	\textit{当老师问：“你们做了哪些改进？”或“为什么你们能传这么远？”时，回答以下三点：}
+
+	\subsection*{1. 阻抗匹配 (Impedance Matching) —— 最关键！}
+	\begin{itemize}
+		\item \textbf{话术：} “我们严格计算了射频走线的宽度。根据PCB板厂的参数，我们将射频线宽调整到了特定数值，\textbf{使其特征阻抗严格匹配至 50$\Omega$}。这样可以防止信号在传输线上发生反射，确发出的功率全部送入天线。”
+		\item \textbf{避坑：} 千万不要说“增加线宽来增加阻抗”！要说\textbf{“调整线宽以匹配50欧姆”}。
+	\end{itemize}
+
+	\subsection*{2. 电源完整性 (Power Integrity)}
+	\begin{itemize}
+		\item \textbf{话术：} “我们在电源引脚附近增加了额外的\textbf{去耦电容（Decoupling Capacitor）}（如原理图中的C12-C14）。射频发射瞬间电流很大，这些电容像‘蓄水池’一样，保证电压稳定，减少了电源纹波对射频信号的干扰。”
+	\end{itemize}
+
+	\subsection*{3. 接地与回流 (Grounding \& Return Path)}
+	\begin{itemize}
+		\item \textbf{话术：} “我们在射频走线两侧打了大量的\textbf{接地过孔（GND Vias）}。这不仅屏蔽了外部干扰，更重要的是为高频信号提供了\textbf{最短的回流路径}，保证了信号传输的完整性。”
+		\item \textbf{补充：} 关于直角弯，可以说：“虽然433MHz波长较长，对直角不敏感，但我们依然采用了45度走线，这是为了养成良好的高频设计规范。”
+	\end{itemize}
+
+	\section{二、 必问技术题 (Q\&A)}
+
+	\subsection*{Q1: 你们测距多少米？为什么能这么远？}
+	\textbf{回答：}
+	实测超过 \textbf{1000米}（或具体数值）。
+	原因有三点：
+	\begin{enumerate}
+		\item 我们的\textbf{阻抗匹配}做得好，驻波比（VSWR）低，损耗小。
+		\item 我们优化了\textbf{电源滤波}，发射信号纯净。
+		\item 我们使用了高增益的吸盘天线，并且在空旷环境测试，不仅符合Friis传输公式的理论预期，也避免了多径效应的衰减。
+	\end{enumerate}
+
+	\subsection*{Q2: 这里的电感电容（L1-L8, C1-C9）是干什么用的？}
+	\textbf{回答：}
+	这些构成了\textbf{巴伦（Balun）}和\textbf{匹配网络}。
+	\begin{itemize}
+		\item CMT2300A的射频引脚是差分输出的，这些元件负责把\textbf{差分信号}转换为\textbf{单端信号}（接SMA头）。
+		\item 同时它们负责滤除高次谐波，保证输出的是纯净的433MHz正弦波。
+	\end{itemize}
+
+	\subsection*{Q3: 为什么原理图里要加这几个额外的电容（C12-C14）？}
+	\textbf{回答：}
+	这是针对淘宝模块的缺陷改进的。淘宝模块为了省成本省掉了这些\textbf{高频滤波电容}。加上它们可以滤除电源上的高频噪声，防止噪声通过电源串扰到射频部分，提高接收灵敏度。
+
+	\subsection*{Q4: 什么是 433MHz？波长是多少？}
+	\textbf{回答：}
+	\begin{itemize}
+		\item 433MHz 属于 ISM (工业、科学、医疗) 免执照频段。
+		\item 波长 $\lambda = c / f \approx 3 \times 10^8 / 433 \times 10^6 \approx \textbf{0.7米 (70厘米)}$。
+	\end{itemize}
+
+	\section{三、 答辩加分项 (Advanced)}
+	\textit{如果老师觉得你们做得好，想给满分，可能会问更深的问题，由\textbf{组长}或\textbf{技术最好的同学}回答。}
+
+	\subsection*{1. 关于 Friis 传输公式}
+	如果问到理论计算，可以提到：
+	$$ P_r = P_t + G_t + G_r - L_{path} $$
+	我们通过提高发射功率 $P_t$（配置寄存器为+20dBm），保证天线增益 $G_t, G_r$，并减小电路板上的插入损耗，从而最大化接收功率 $P_r$。
+
+	\subsection*{2. 关于 PCB 材质}
+	如果问板子材质，回答：
+	“我们使用的是普通的 \textbf{FR-4} 板材。虽然 FR-4 在高频（如 5GHz）下介电常数 $\varepsilon_r$ 不稳定且损耗大，但在 \textbf{433MHz} 这个相对较低的频段，FR-4 的性能是完全足够的，且性价比最高。”
+
+\end{document}

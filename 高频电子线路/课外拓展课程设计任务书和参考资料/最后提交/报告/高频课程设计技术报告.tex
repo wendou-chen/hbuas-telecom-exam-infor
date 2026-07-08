@@ -1,0 +1,122 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[UTF8]{ctex} % 支持中文
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+% 页面设置
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\linespread{1.5} % 1.5倍行距
+
+% 页眉页脚
+\pagestyle{fancy}
+\fancyhead[L]{CMT2300A 射频模块设计报告}
+\fancyhead[R]{Hbuas 23Comm 小组}
+\fancyfoot[C]{\thepage}
+
+% 标题格式
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+\title{\textbf{国产 433MHz 射频芯片 CMT2300A 模块设计技术报告}\\ \large —— 基于 Direct Tie 拓扑的阻抗匹配与电路分析}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+
+	\maketitle
+	\thispagestyle{empty}
+
+	\begin{abstract}
+		本报告详细阐述了基于国产射频收发芯片 CMT2300A 的 433MHz 无线通信模块的硬件设计原理。重点分析了射频前端（RF Front-End）的电路网络架构，特别是芯片 PA/LNA 引脚与 $50\Omega$ 天线之间的阻抗匹配网络。设计采用了 Direct Tie（直连）拓扑结构，通过多级 L-C 网络实现发射功率的最大化传输、接收灵敏度的优化以及高次谐波的抑制。通过嘉立创 EDA 进行 PCB 阻抗计算与布局优化，确保了在 20dBm 发射功率下实现 1000 米以上的传输距离。
+	\end{abstract}
+
+	\newpage
+	\tableofcontents
+	\newpage
+
+	\section{设计概述}
+	本次课程设计的目标是设计一款工作在 433.92 MHz 的无线数传模块。核心芯片选用华普微的 CMT2300A，目标发射功率为 +20dBm。为了兼顾性能与成本，且简化 PCB 布局，射频前端采用了官方推荐的 **Direct Tie（直连）** 应用电路。该方案无需外部射频开关（如 AS179），利用无源器件实现收发链路的复用。
+
+	\section{射频匹配网络理论基础}
+
+	在射频电路设计中，阻抗匹配是决定传输效率的关键。根据**最大功率传输定理**，当负载阻抗 $Z_L$ 等于源阻抗 $Z_S$ 的共轭复数时（$Z_L = Z_S^*$），负载能获得最大功率。
+
+	在本设计中，系统标准阻抗为 $Z_0 = 50\Omega$。匹配网络的设计目标是：
+	\begin{enumerate}
+		\item \textbf{发射模式 (Tx)}：将功率放大器 (PA) 的低输出阻抗（通常 $<10\Omega$）变换为 $50\Omega$，并滤除二次、三次谐波。
+		\item \textbf{接收模式 (Rx)}：将天线的 $50\Omega$ 阻抗与低噪声放大器 (LNA) 的高输入阻抗进行匹配，以获得最佳噪声系数 (NF)。
+	\end{enumerate}
+
+	\section{Direct Tie 电路网络详细分析}
+
+	\subsection{电路拓扑结构}
+	本设计依据 CMT2300A 数据手册（Rev 1.8）中的 20dBm Direct Tie 参考设计进行实施。连接天线与芯片的电路网络是一个高阶的 **L-C 梯形网络**，具体包含电感 $L1, L2, L4, L5, L7, L8$ 和电容 $C1, C2, C3, C16, C6, C7$。
+
+	该网络并非单一的 $\pi$ 型或 T 型匹配，而是复合结构，其功能拆解如下：
+
+	\subsection{1. 馈电与扼流 (Bias \& Choke)}
+	\begin{itemize}
+		\item \textbf{元件}：$L1$ (180 nH)。
+		\item \textbf{分析}：$L1$ 连接在 VDD 和 PA (Pin 3) 之间。对于直流 (DC)，电感相当于短路，为 PA 提供工作电流；对于 433MHz 射频信号 (RF)，$180\text{nH}$ 电感呈现高阻抗 ($Z_{L1} = j\omega L \approx j490\Omega$)，防止射频能量泄露到电源网络。
+	\end{itemize}
+
+	\subsection{2. 隔直与耦合 (DC Block)}
+	\begin{itemize}
+		\item \textbf{元件}：$C1$ (15 pF)。
+		\item \textbf{分析}：$C1$ 串联在 PA 输出路径上，隔绝 PA 引脚的直流偏置电压，同时让射频信号通过。
+	\end{itemize}
+
+	\subsection{3. 阻抗变换与谐波滤波 (Matching \& Filtering)}
+	这是核心的匹配网络，由多级 L-C 组成：
+	\begin{itemize}
+		\item \textbf{第一级 (L2 - C2)}：$L2 (22\text{nH})$ 与 $C2 (3.0\text{pF})$ 构成第一级 L 型匹配，初步提升 PA 的低阻抗，并构成低通滤波特性。
+		\item \textbf{第二级 (C16)}：**特别注意**，在 433MHz 20dBm 方案中，原理图中的 $L3$ 位置实际使用的是电容 $C16 (15\text{pF})$。这是一个关键的匹配元件，用于调节相位和阻抗轨迹。
+		\item \textbf{第三级 (L4 - L5 - C3)}：$L4 (33\text{nH})$、$L5 (33\text{nH})$ 和 $C3 (6.2\text{pF})$ 构成了最终的 $\pi$ 型或 T 型低通滤波器。这一级的主要作用是将阻抗最终拉回 $50\Omega$ 并在 SMA 接口处输出，同时对高次谐波（868MHz, 1.2GHz 等）进行深度衰减，以满足无线电管理委员会的杂散辐射要求。
+	\end{itemize}
+
+	\subsection{4. 接收路径的耦合 (Rx Path)}
+	\begin{itemize}
+		\item \textbf{元件}：$L7, L8, C6, C7$ 及 Pin 1 (RFIP), Pin 2 (RFIN)。
+		\item \textbf{分析}：在 Direct Tie 模式下，接收引脚 Pin 2 (RFIN) 直接连接到 Tx 路径的 $C1/L2$ 节点处。
+		\item \textbf{工作原理}：当芯片处于 Rx 模式时，PA 关闭呈现高阻抗，天线感应到的微弱信号经过 $L5 \to L4 \to C16 \to L2$ 后，流入 Pin 2。$C6, L7, C7$ 构成了 LNA 输入端的辅助匹配网络和平衡电路，确保差分 LNA 能够获得良好的信噪比。
+	\end{itemize}
+
+	\section{关键器件选型与 PCB 实现}
+
+	\subsection{器件参数表 (433MHz @ 20dBm)}
+	严格遵循官方 BOM，选用高品质 0603 叠层电感和 NPO 材质电容，以降低插入损耗：
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{ccc}
+			\toprule
+			\textbf{标号} & \textbf{元件值} & \textbf{作用} \\
+			\midrule
+			L1 & 180 nH & 射频扼流圈 (RF Choke) \\
+			C1 & 15 pF & 隔直/匹配 \\
+			L2 & 22 nH & 匹配/滤波 \\
+			\textbf{C16 (原L3)} & \textbf{15 pF} & \textbf{关键匹配元件} \\
+			L4 / L5 & 33 nH & 低通滤波/阻抗微调 \\
+			C3 & 6.2 pF & 谐波滤除 \\
+			\bottomrule
+		\end{tabular}
+		\caption{核心射频元件清单}
+	\end{table}
+
+	\subsection{PCB 阻抗控制}
+	为了保证信号从匹配网络输出后无损耗地传输到天线，PCB 设计中采用了 **共面波导 (Coplanar Waveguide with Ground)** 结构。
+	\begin{itemize}
+		\item \textbf{板材参数}：FR-4, 板厚 1.6mm, 铜厚 1oz。
+		\item \textbf{计算结果}：在铺铜间距 (Clearance) 设为 \textbf{11.8 mil} 时，射频主传输线（L5 到 SMA）的线宽设定为 \textbf{50.6 mil}，精确匹配 $50\Omega$ 特性阻抗。
+		\item \textbf{布局优化}：射频路径采用了“一字型”直线布局，避免了 90 度折线带来的信号反射；在射频线两侧及芯片底部大量打孔 (GND Vias)，确保了良好的信号回流路径和屏蔽效果。
+	\end{itemize}
+
+	\section{总结}
+	本设计通过对 CMT2300A Direct Tie 电路网络的深入分析，理解了多级 L-C 网络在收发复用、阻抗变换及谐波抑制中的多重作用。在实施过程中，严格修正了官方文档中 L3 为电容的特殊配置，并通过精确的 PCB 阻抗计算和布局工艺，最大程度地减少了信号衰减。该设计理论上能够满足 1000 米远距离通信的链路预算要求。
+
+\end{document}

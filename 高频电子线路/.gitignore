@@ -1,0 +1,73 @@
+# Course-local exclusions: keep review/course-design source files, leave bulky or derived files out.
+
+# Textbooks and ordinary homework are not committed.
+课本文件/
+作业五/
+期末考试/作业题目/
+期末考试/Latex及pdf文件/作业对应大纲题目.*
+C192930_64A7B0BA4E8969AE9CD5226991358300.pdf
+
+# Archives, videos, and duplicated vendor/reference dumps.
+*.rar
+*.zip
+*.7z
+*.mp4
+课外拓展课程设计任务书和参考资料/SMA数据手册.pdf
+课外拓展课程设计任务书和参考资料/课外拓展课程设计任务书和参考资料/CMT2300A_Datasheet_CN_V1.8_202503.pdf
+课外拓展课程设计任务书和参考资料/视频文件/
+课外拓展课程设计任务书和参考资料/3c41d-main/
+课外拓展课程设计任务书和参考资料/YX67329-CMT2300A-433M-LoRa无线收发-20190517/
+课外拓展课程设计任务书和参考资料/驱动模块/
+课外拓展课程设计任务书和参考资料/驱动模块/fd2c4-main/
+课外拓展课程设计任务书和参考资料/课外拓展课程设计任务书和参考资料/国产433M芯片射频板开发视频/
+课外拓展课程设计任务书和参考资料/课外拓展课程设计任务书和参考资料/国产sub1g芯片CMT2300A射频网络匹配电路分析_cmt2300a芯片手册-CSDN博客*
+课外拓展课程设计任务书和参考资料/课外拓展课程设计任务书和参考资料/图片/
+课外拓展课程设计任务书和参考资料/调试文件/
+课外拓展课程设计任务书和参考资料/最后提交/调试程序文件/433Mhz 20dBm配置文件/cmt2300a_params.h
+课外拓展课程设计任务书和参考资料/最后提交/调试程序文件/调试技术文档.pdf
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/32引脚定义文件/
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/433Mhz 20dBm配置文件/
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/CMT2300A_DemoEasy/
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/调试技术文档.pdf
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/验收调试文件/32引脚定义文件/
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/验收调试文件/433Mhz 20dBm配置文件/
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/验收调试文件/调试技术文档.pdf
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/验收调试文件/CMT2300A_DemoEasy/MDK-ARM/
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/验收调试文件/CMT2300A_DemoEasy/USER/
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/验收调试文件/CMT2300A_DemoEasy/README_C8T6.md
+课外拓展课程设计任务书和参考资料/高频课程设计文件_hbuas_2026_1_1/调试程序文件/验收调试文件/CMT2300A_DemoEasy/clear.bat
+
+# LaTeX build outputs.
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# Keil/embedded build outputs and local IDE state.
+**/Obj/
+**/List/
+**/DebugConfig/
+**/RTE/
+*.o
+*.crf
+*.d
+*.dep
+*.axf
+*.hex
+*.map
+*.lst
+*.lnp
+*.m51
+*.s_old
+*.uvguix.*
+EventRecorderStub.scvd
+JLinkLog.txt
+JLinkSettings.ini
+build_log.txt
+
+# Local EDA backups/runtime files.
+*.eprj_backup
+*.eprj2-wal
+12-19-1.eprj
+高频课设最终版本12-21-1.eprj2

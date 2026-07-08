@@ -1,0 +1,79 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[UTF8]{ctex} % 支持中文
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+
+% 页面边距设置
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+\title{\textbf{CMT2300A 射频模块 PCB 打孔 (Via) 规范指南}\\ \large （确保 1000 米传输的核心工艺）}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+
+	\maketitle
+
+	\begin{tcolorbox}[colback=yellow!10!white,colframe=red!75!black,title=⚠️ 操作前必读]
+		打孔（放置过孔）是连接顶层 GND 和底层 GND 的关键步骤。\\
+		\textbf{如果不打孔或打错，射频性能将归零，且芯片会过热烧毁。}
+	\end{tcolorbox}
+
+	\section{一、过孔参数设置 (Settings)}
+	请在嘉立创 EDA 右侧属性面板中严格设置以下参数：
+
+	\begin{itemize}
+		\item \textbf{网络 (Net)：} 必须选择 \textcolor{red}{\textbf{GND}}。（\textit{如果不选 GND，过孔就是废的}）
+		\item \textbf{内径 (Hole)：} \textbf{12 mil} (0.3mm)
+		\item \textbf{外径 (Diameter)：} \textbf{24 mil} (0.6mm)
+		\item \textbf{说明：} 这是嘉立创最通用的标准工艺尺寸。
+	\end{itemize}
+
+	\section{二、三大必须打孔区域 (Critical Areas)}
+
+	\subsection{1. 芯片“肚子”底下 (散热与主地)}
+	\textbf{位置：} CMT2300A 芯片中间那个正方形的裸露焊盘 (Pin 17)。\\
+	\textbf{要求：}
+	\begin{itemize}
+		\item 在正方形焊盘区域内，打 \textbf{4 到 9 个} 过孔。
+		\item 排列方式参考骰子上的“五点”或“九点”图案，均匀分布。
+		\item \textbf{作用：} 这是芯片散热和接地的唯一通道，必须打通。
+	\end{itemize}
+
+	\subsection{2. 射频主线“护栏” (屏蔽墙)}
+	\textbf{位置：} 沿着那根 \textbf{50.6mil} 宽的射频主线（L5 $\rightarrow$ SMA 天线座）。\\
+	\textbf{要求：}
+	\begin{itemize}
+		\item 在射频线两侧的 GND 铜皮上打孔。
+		\item 就像公路两边的“路灯”一样，排成两排。
+		\item 间距：每隔 \textbf{150mil - 200mil} (约 4-5mm) 打一个。
+		\item \textbf{注意：} 不要打得太靠近射频线，保持在铺铜的安全间距（11.8mil）之外。
+	\end{itemize}
+
+	\subsection{3. 电容/电感“就近钻地” (最短回路)}
+	\textbf{位置：} 所有连接 GND 的元件焊盘（特别是电源电容 C8-C11，射频电容 C2, C3, C6, C7 等）。\\
+	\textbf{要求：}
+	\begin{itemize}
+		\item 在元件的 GND 焊盘旁边，\textbf{越近越好}，打一个过孔。
+		\item \textbf{原则：} 让电流原地钻地，不要在顶层拉长线去找地。
+	\end{itemize}
+
+	\section{三、最后的缝合 (Stitching)}
+	\begin{itemize}
+		\item 在板子空旷无走线的区域，每隔一段距离随机打几个 GND 过孔。
+		\item 在板子的四个角落附近打孔。
+		\item \textbf{目的：} 将顶层地平面和底层地平面彻底连成一体，增强抗干扰能力。
+	\end{itemize}
+
+	\section{四、收尾动作 (必须执行)}
+	打完所有孔后，PCB 上可能会显示过孔与铜皮未连接（有黑色缝隙）。\\
+	\textbf{请务必执行以下操作：}
+	\begin{enumerate}
+		\item 按下快捷键 \textbf{Shift + B}（或菜单栏：设计 $\rightarrow$ 重建铺铜）。
+		\item \textbf{检查：} 确认红色的铜皮已经自动流向过孔，形成十字连接或全连接。
+	\end{enumerate}
+
+\end{document}

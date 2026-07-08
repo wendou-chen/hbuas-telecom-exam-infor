@@ -1,0 +1,83 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[UTF8]{ctex} % 支持中文显示
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+
+% 页面设置
+\geometry{left=2cm, right=2cm, top=2cm, bottom=2cm}
+
+\title{\textbf{CMT2300A 射频模块元器件采购清单}\\ \large （433MHz / 20dBm 方案 - 最终版）}
+\author{23届陈文斗}
+\date{\today}
+
+\begin{document}
+
+	\maketitle
+
+	\section*{\textcolor{red}{[重要]} 采购前必读（给买手队友）}
+	\begin{enumerate}
+		\item \textbf{STM32 开发板：} \textcolor{blue}{不需要买}（组长已买好）。
+		\item \textbf{贴片封装统一：} 所有电阻、电容、电感，除非特别标注，**统统买 0603 封装**。
+		\item \textbf{L3 的陷阱：} 原理图和 BOM 表里的 \textbf{L3} 其实是 \textbf{15pF 的电容}！千万别买成电感！
+		\item \textbf{数量策略：} 小元件（电容电感）很便宜但容易丢，**请按清单里的“推荐购买量”下单**（通常是 10-20 个起），多买点备用。
+		\item \textbf{电感品牌：} 不需要买昂贵的进口货，搜**“0603 叠层电感”**，买国产普通品牌即可。
+	\end{enumerate}
+
+	\section{1. 核心芯片与接口}
+	\begin{longtable}{|p{3cm}|p{6cm}|p{2cm}|p{3.5cm}|}
+		\hline
+		\textbf{名称} & \textbf{规格/搜索关键词} & \textbf{数量} & \textbf{备注} \\ \hline
+		\endfirsthead
+		\hline
+		\textbf{名称} & \textbf{规格/搜索关键词} & \textbf{数量} & \textbf{备注} \\ \hline
+		\endhead
+
+		\textbf{射频芯片} & \textbf{CMT2300A} \newline 封装：QFN-16 & 5 片 & QFN很难焊，多买几片防烧 \\ \hline
+		\textbf{晶振 (Y1)} & \textbf{26MHz 无源晶振} \newline 封装：SMD 3225 (4脚) \newline 精度：10ppm & 5 个 & 必须是 3225 贴片封装 \\ \hline
+		\textbf{SMA 母座} & \textbf{SMA-KE} \newline 说明：PCB板端插座，立式，外螺内孔 & 5 个 & 引脚间距要标准 \\ \hline
+		\textbf{天线} & \textbf{433MHz 吸盘天线} \newline 接口：\textcolor{red}{SMA 公头 (内螺内针)} \newline 增益：3dBi 以上 & 2 根 & 必须买 433M 频率的 \\ \hline
+		\textbf{排针} & \textbf{1x40P 排针} \newline 间距：2.54mm & 5 排 & 以后也能用 \\ \hline
+	\end{longtable}
+
+	\section{2. 电感 (L) - 全部 0603 封装}
+	\textit{*搜索关键词：0603 叠层电感，误差 $\pm$5\%*}
+
+	\begin{longtable}{|p{2cm}|p{2.5cm}|p{2cm}|p{7.5cm}|}
+		\hline
+		\textbf{标号} & \textbf{感值} & \textbf{购买量} & \textbf{重要提示} \\ \hline
+		L1 & \textbf{180 nH} & 10 个 & 射频扼流圈，很关键 \\ \hline
+		L8 & \textbf{68 nH} & 10 个 & \\ \hline
+		L4, L5 & \textbf{33 nH} & 20 个 & \\ \hline
+		L6, L7 & \textbf{27 nH} & 20 个 & \\ \hline
+		L2 & \textbf{22 nH} & 10 个 & \\ \hline
+	\end{longtable}
+
+	\section{3. 电容 (C) - 全部 0603 封装}
+	\textit{*搜索关键词：0603 贴片电容*}
+
+	\begin{longtable}{|p{3.5cm}|p{2.5cm}|p{2cm}|p{6cm}|}
+		\hline
+		\textbf{标号} & \textbf{容值} & \textbf{购买量} & \textbf{重要提示} \\ \hline
+		\multicolumn{4}{|c|}{\textbf{材质：NPO / C0G (高精度，白色/淡色)}} \\ \hline
+		C12, C13, C14, C15 & \textbf{47 pF} & \textbf{50 个} & \textcolor{red}{千万别买成 nF！}滤波用，量大 \\ \hline
+		C1, L3(即C16) & \textbf{15 pF} & 20 个 & \textbf{注意：L3 也是买这个！} \\ \hline
+		C4, C5 & \textbf{24 pF} & 20 个 & 晶振匹配电容 \\ \hline
+		C3 & \textbf{6.2 pF} & 10 个 & \\ \hline
+		C6, C7 & \textbf{4.7 pF} & 20 个 & \\ \hline
+		C2 & \textbf{3.0 pF} & 10 个 & \\ \hline
+		C9 & \textbf{470 pF} & 10 个 & \\ \hline
+		\multicolumn{4}{|c|}{\textbf{材质：X7R (普通，深褐色)}} \\ \hline
+		C8 & \textbf{4.7 uF} & 10 个 & 电源大电容 \\ \hline
+		C10, C11 & \textbf{0.1 uF} (104) & 20 个 & 电源滤波 \\ \hline
+	\end{longtable}
+
+	\section{4. 焊接辅助 (必须买)}
+	\begin{itemize}
+		\item \textbf{助焊剂 / 锡膏：} 1 盒（QFN 芯片没有助焊剂焊不上去）。
+		\item \textbf{吸锡带：} 1 卷（清理连锡用）。
+	\end{itemize}
+
+\end{document}
